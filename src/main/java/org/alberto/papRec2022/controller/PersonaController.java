@@ -43,7 +43,12 @@ public class PersonaController {
 			personaRepository.save(persona);
 			
 		} catch (Exception e) {
-			PRG.error("El loginname "+loginname+" ya existe","/persona/c");
+			if (e.getMessage().contains("UK_loginname")) {
+				PRG.error("El loginname "+loginname+" ya existe","/persona/c");
+			}
+			else {
+				PRG.error("Error desconocido al guardar la persona ","/persona/c");
+			}
 		}
 		return "redirect:/persona/r";
 	}
