@@ -22,6 +22,7 @@ public class PersonaController {
 	@GetMapping("r")
 	public String r(ModelMap m) {
 		m.put("view", "persona/r");
+		m.put("personas", personaRepository.findAll());
 		return "_t/frame";
 	}
 

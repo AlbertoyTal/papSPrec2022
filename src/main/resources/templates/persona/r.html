@@ -1,6 +1,21 @@
 <div class="container">
 	<h1>Lista de personas</h1>
+	
 	<form action="/persona/c">
 		<input type="submit" value="Nueva persona"/>
 	</form>
+	
+	<table class="table table-striped">
+		<tr>
+			<th>Loginname</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+		</tr>
+		
+		<tr th:each="persona : ${personas}">
+			<td> <th:block th:text="${persona.loginname}"/>  </td>
+			<td> <th:block th:text="${persona.nombre}"/></td>
+			<td> <th:block th:text="${persona.apellido}"/></td>
+		</tr>
+	</table>
 </div>
