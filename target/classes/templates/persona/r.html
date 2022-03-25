@@ -10,12 +10,28 @@
 			<th>Loginname</th>
 			<th>Nombre</th>
 			<th>Apellido</th>
+			<th>Acciones</th>
 		</tr>
 		
 		<tr th:each="persona : ${personas}">
 			<td> <th:block th:text="${persona.loginname}"/>  </td>
 			<td> <th:block th:text="${persona.nombre}"/></td>
 			<td> <th:block th:text="${persona.apellido}"/></td>
+			<td class="row"> 
+				<form action="/persona/u">
+					<input type="hidden" name="idPersona" th:value="${persona.id}"/>
+					<button onclick="submit()">
+						<img src="/img/lapiz.png" height="25" width="25"/>
+					</button>
+				</form>
+				<form action="/persona/d">
+					<input type="hidden" name="idPersona" th:value="${persona.id}"/>
+					<button onclick="submit()">
+						<img src="/img/basura.png" height="25" width="25"/>
+					</button>
+				</form>
+			</td>
+
 		</tr>
 	</table>
 </div>
