@@ -1,5 +1,8 @@
 package org.alberto.papRec2022.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,16 @@ public class HomeController {
 				: "Pulsa para volver a home";
 		String severity = s.getAttribute("_severity") != null ? (String) s.getAttribute("_severity") : "info";
 		String link = s.getAttribute("_link") != null ? (String) s.getAttribute("_link") : "/";
-
+		Map<String,String> params=new HashMap<>();
+		
+		if (link.contains("?")) {
+			String parameters = link.split("\\?")[1];
+			link = link.split("\\?")[0];
+			for (String parameter : parameters.split("\\&") ) {
+				params.put(parameter.split("\\=")[0], parameter.split("\\=")[1]);
+			}
+		}
+		
 		s.removeAttribute("_mensaje");
 		s.removeAttribute("_severity");
 		s.removeAttribute("_link");
@@ -26,6 +38,7 @@ public class HomeController {
 		m.put("mensaje", mensaje);
 		m.put("severity", severity);
 		m.put("link", link);
+		m.put("params", params);
 
 		m.put("view", "/_t/info");
 		return "/_t/frame";
