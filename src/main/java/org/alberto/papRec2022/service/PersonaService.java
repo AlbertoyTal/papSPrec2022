@@ -2,6 +2,8 @@ package org.alberto.papRec2022.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.alberto.papRec2022.entities.Persona;
 import org.alberto.papRec2022.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,11 @@ public class PersonaService {
 	public List<Persona> findAll() {
 		return personaRepository.findAll();
 	}
-	
+
 	public void save(Persona persona) {
 		personaRepository.save(persona);
 	}
-	
+
 	public Persona getById(Long idPersona) {
 		return personaRepository.getById(idPersona);
 	}
@@ -28,15 +30,21 @@ public class PersonaService {
 	public void update(Long idPersona, String loginname, String nombre, String apellido) throws Exception {
 		Persona persona = personaRepository.getById(idPersona);
 		if (!loginname.equals(persona.getLoginname())) {
-			if (personaRepository.findByLoginname(loginname)==null) {
+			if (personaRepository.findByLoginname(loginname) == null) {
 				persona.setLoginname(loginname);
-			}
-			else {
+			} else {
 				throw new Exception("UK_loginname");
 			}
 		}
 		persona.setNombre(nombre);
 		persona.setApellido(apellido);
 		personaRepository.saveAndFlush(persona);
+	}
+
+	public void delete(Long idPersona) throws Exception {
+		if (personaRepository.findById(idPersona) == null) {
+			throw new Exception("El id de la persona " + idPersona + " no existe");
+		}
+		personaRepository.delete(personaRepository.getById(idPersona));
 	}
 }

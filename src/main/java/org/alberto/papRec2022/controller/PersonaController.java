@@ -87,4 +87,20 @@ public class PersonaController {
 		return "redirect:/persona/r";
 	}
 
+	@GetMapping("d")
+	public String dPost(
+			@RequestParam(value="idPersona",required = false) Long idPersona
+			) throws DangerException
+			{
+		if (idPersona==null) {
+			PRG.error("El id de la persona a borrar no puede ser nulo","persona/r");
+		}
+		try {
+			personaService.delete(idPersona);
+		}
+		catch (Exception e) {
+			PRG.error(e.getMessage(),"persona/r");
+		}
+		return "redirect:/persona/r";
+	}
 }
