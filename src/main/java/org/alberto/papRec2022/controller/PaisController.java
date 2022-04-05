@@ -1,11 +1,9 @@
 package org.alberto.papRec2022.controller;
 
 import org.alberto.papRec2022.entities.Pais;
-import org.alberto.papRec2022.entities.Persona;
 import org.alberto.papRec2022.exception.DangerException;
 import org.alberto.papRec2022.exception.PRG;
 import org.alberto.papRec2022.service.PaisService;
-import org.alberto.papRec2022.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

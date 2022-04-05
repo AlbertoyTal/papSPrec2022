@@ -2,7 +2,6 @@ package org.alberto.papRec2022.service;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
 
 import org.alberto.papRec2022.entities.Persona;
 import org.alberto.papRec2022.repository.PersonaRepository;

@@ -2,12 +2,9 @@ package org.alberto.papRec2022.service;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
 
 import org.alberto.papRec2022.entities.Pais;
-import org.alberto.papRec2022.entities.Persona;
 import org.alberto.papRec2022.repository.PaisRepository;
-import org.alberto.papRec2022.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
