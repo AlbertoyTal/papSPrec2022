@@ -1,0 +1,14 @@
+<div class="container">
+	<h1>Editar país</h1>
+	
+	<form action="/pais/u" method="post">
+		<input type="hidden" name="idPais" th:value="${pais.id}"/>
+		
+		<label for="idNombre">Nombre</label>
+		<input id="idNombre" type="text" th:value="${pais.nombre}" name="nombre"/>
+		<br/>
+		
+		<input type="submit"/>
+		<br/>
+	</form>
+</div>
