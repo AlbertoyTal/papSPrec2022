@@ -1,8 +1,8 @@
 package org.alberto.papRec2022.controller;
 
-import org.alberto.papRec2022.entities.Persona;
 import org.alberto.papRec2022.exception.DangerException;
 import org.alberto.papRec2022.exception.PRG;
+import org.alberto.papRec2022.service.PaisService;
 import org.alberto.papRec2022.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +19,9 @@ public class PersonaController {
 	@Autowired
 	private PersonaService personaService;
 	
+	@Autowired
+	private PaisService paisService;
+	
 	@GetMapping("r")
 	public String r(ModelMap m) {
 		m.put("view", "persona/r");
@@ -28,6 +31,7 @@ public class PersonaController {
 
 	@GetMapping("c")
 	public String c(ModelMap m) {
+		m.put("paises", paisService.findAll());
 		m.put("view", "persona/c");
 		return "_t/frame";
 	}
@@ -36,12 +40,12 @@ public class PersonaController {
 	public String cPost(
 			@RequestParam("loginname") String loginname, 
 			@RequestParam("nombre") String nombre,
-			@RequestParam("apellido") String apellido) throws DangerException 
+			@RequestParam("apellido") String apellido,
+			@RequestParam(value="idPaisNace",required = false) Long idPaisnace
+			) throws DangerException 
 	{
 		try {
-			Persona persona = new Persona(loginname, nombre, apellido);
-			personaService.save(persona);
-			
+			personaService.save(loginname, nombre, apellido, idPaisnace);
 		} catch (Exception e) {
 			if (e.getMessage().contains("UK_loginname")) {
 				PRG.error("El loginname "+loginname+" ya existe","/persona/c");

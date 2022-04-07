@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -21,6 +22,9 @@ public class Persona {
 	private String loginname;
 	private String nombre;
 	private String apellido;
+	
+	@ManyToOne
+	private Pais nace;
 	
 	//=============================
 	public Persona() {
@@ -66,6 +70,15 @@ public class Persona {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+
+	public Pais getNace() {
+		return nace;
+	}
+
+	public void setNace(Pais nace) {
+		this.nace = nace;
+	}
+	
 	
 	//=============================
 }
