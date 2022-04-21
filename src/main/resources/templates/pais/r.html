@@ -8,11 +8,15 @@
 	<table class="table table-striped">
 		<tr>
 			<th>Nombre</th>
+			<th>Num.nacidos</th>
 			<th>Acciones</th>
 		</tr>
 		
 		<tr th:each="pais : ${paises}">
 			<td> <th:block th:text="${pais.nombre}"/></td>
+			
+			<td> <th:block th:text="${pais.nacidos.size()}"/> </td>
+			
 			<td class="row"> 
 				<form action="/pais/u">
 					<input type="hidden" name="idPais" th:value="${pais.id}"/>

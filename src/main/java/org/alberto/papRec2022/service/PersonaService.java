@@ -43,6 +43,27 @@ public class PersonaService {
 		personaRepository.saveAndFlush(persona);
 	}
 
+	
+	public void update(Long idPersona, String loginname, String nombre, String apellido, Long idPaisNace) throws Exception {
+		Persona persona = personaRepository.getById(idPersona);
+		if (!loginname.equals(persona.getLoginname())) {
+			if (personaRepository.findByLoginname(loginname) == null) {
+				persona.setLoginname(loginname);
+			} else {
+				throw new Exception("UK_loginname");
+			}
+		}
+		persona.setNombre(nombre);
+		persona.setApellido(apellido);
+		Pais paisNace = null;
+		if (idPaisNace != null && idPaisNace>0) {
+			paisNace = paisRepository.getById(idPaisNace);
+		}
+		persona.setNace(paisNace);
+		personaRepository.saveAndFlush(persona);
+	}
+
+	
 	public void delete(Long idPersona) throws Exception {
 		if (personaRepository.findById(idPersona) == null) {
 			throw new Exception("El id de la persona " + idPersona + " no existe");
@@ -56,11 +77,15 @@ public class PersonaService {
 	
 	public void save(String loginname, String nombre, String apellido, Long idPaisNace) {
 		Persona persona = new Persona(loginname,nombre,apellido);
-		Pais pais = paisRepository.getById(idPaisNace);
-		
+		Pais pais = null;
+		if (idPaisNace != null && idPaisNace>0) {
+			pais = paisRepository.getById(idPaisNace);
+		}
 		persona.setNace(pais);
-		pais.getNacidos().add(persona);
 		
+		if (pais!=null) {
+			pais.getNacidos().add(persona);
+		}
 		personaRepository.save(persona);
 	}
 	

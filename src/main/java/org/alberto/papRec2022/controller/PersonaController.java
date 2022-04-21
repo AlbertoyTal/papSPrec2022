@@ -66,6 +66,7 @@ public class PersonaController {
 			PRG.error("El id de la persona no puede ser nulo","/persona/r");
 		}
 		m.put("persona", personaService.getById(idPersona));
+		m.put("paises", paisService.findAll());
 		m.put("view", "persona/u");
 		return "_t/frame";
 	}
@@ -75,10 +76,13 @@ public class PersonaController {
 			@RequestParam("idPersona") Long idPersona, 
 			@RequestParam("loginname") String loginname, 
 			@RequestParam("nombre") String nombre,
-			@RequestParam("apellido") String apellido) throws DangerException 
+			@RequestParam("apellido") String apellido,
+			@RequestParam(value="idPaisNace",required = false) Long idPaisNace) 
+		throws DangerException
+
 	{
 		try {
-			personaService.update(idPersona,loginname, nombre, apellido);
+			personaService.update(idPersona,loginname, nombre, apellido, idPaisNace);
 			
 		} catch (Exception e) {
 			if (e.getMessage().contains("UK_loginname")) {
