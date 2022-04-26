@@ -2,8 +2,10 @@ package org.alberto.papRec2022.service;
 
 import java.util.List;
 
+import org.alberto.papRec2022.entities.Aficion;
 import org.alberto.papRec2022.entities.Pais;
 import org.alberto.papRec2022.entities.Persona;
+import org.alberto.papRec2022.repository.AficionRepository;
 import org.alberto.papRec2022.repository.PaisRepository;
 import org.alberto.papRec2022.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class PersonaService {
 	
 	@Autowired
 	private PaisRepository paisRepository;
+
+	@Autowired
+	private AficionRepository aficionRepository;
 
 	//=======================================================
 	
@@ -75,17 +80,51 @@ public class PersonaService {
 		personaRepository.save(new Persona(loginname,nombre,apellido));
 	}
 	
-	public void save(String loginname, String nombre, String apellido, Long idPaisNace) {
+	public void save(String loginname, String nombre, String apellido, Long idPaisNace, Long idPaisVive, Long[] idsAficionGusta, Long[] idsAficionOdia) {
 		Persona persona = new Persona(loginname,nombre,apellido);
-		Pais pais = null;
-		if (idPaisNace != null && idPaisNace>0) {
-			pais = paisRepository.getById(idPaisNace);
-		}
-		persona.setNace(pais);
 		
-		if (pais!=null) {
-			pais.getNacidos().add(persona);
+		// Set Pais nace ===========================================
+		Pais paisNace = null;
+		if (idPaisNace != null && idPaisNace>0) {
+			paisNace = paisRepository.getById(idPaisNace);
 		}
+		persona.setNace(paisNace);
+		
+		if (paisNace!=null) {
+			paisNace.getNacidos().add(persona);
+		}
+
+		// Set Pais vive ===========================================
+		Pais paisVive = null;
+		if (idPaisVive != null && idPaisVive>0) {
+			paisVive = paisRepository.getById(idPaisVive);
+		}
+		persona.setVive(paisVive);
+		
+		if (paisVive!=null) {
+			paisVive.getResidentes().add(persona);
+		}
+		
+		// ======================  Set gustos =======================
+		
+		if (idsAficionGusta != null ) {
+			for (Long idAficionGusta : idsAficionGusta) {
+				Aficion aficionGusta = aficionRepository.getById(idAficionGusta);
+				persona.getGustos().add(aficionGusta);
+				aficionGusta.getGustosos().add(persona);
+			}
+		}
+		
+		// ======================  Set odios =======================
+		if (idsAficionOdia!=null) {
+			for (Long idAficionOdia : idsAficionOdia) {
+				Aficion aficionOdia = aficionRepository.getById(idAficionOdia);
+				persona.getOdios().add(aficionOdia);
+				aficionOdia.getOdiosos().add(persona);
+			}
+		}
+		//=======================================
+		
 		personaRepository.save(persona);
 	}
 	

@@ -11,6 +11,9 @@
 			<th>Nombre</th>
 			<th>Apellido</th>
 			<th>País nac.</th>
+			<th>País resid.</th>
+			<th>Gustos</th>
+			<th>Odios</th>
 			<th>Acciones</th>
 		</tr>
 		
@@ -19,6 +22,13 @@
 			<td> <th:block th:text="${persona.nombre}"/></td>
 			<td> <th:block th:text="${persona.apellido}"/></td>
 			<td> <th:block th:text="${persona.nace?.nombre}"/> </td>
+			<td> <th:block th:text="${persona.vive?.nombre}"/> </td>
+			<td>
+				<th:block th:each=" gusto : ${persona.gustos}" th:text="|${gusto.nombre} /|" />
+			</td>
+			<td>
+				<th:block th:each=" odio : ${persona.odios}" th:text="|${odio.nombre} /|" />
+			</td>
 			<td class="row"> 
 				<form action="/persona/u">
 					<input type="hidden" name="idPersona" th:value="${persona.id}"/>

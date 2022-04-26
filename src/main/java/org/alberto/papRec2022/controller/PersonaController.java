@@ -1,7 +1,10 @@
 package org.alberto.papRec2022.controller;
 
+import java.util.List;
+
 import org.alberto.papRec2022.exception.DangerException;
 import org.alberto.papRec2022.exception.PRG;
+import org.alberto.papRec2022.service.AficionService;
 import org.alberto.papRec2022.service.PaisService;
 import org.alberto.papRec2022.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,10 @@ public class PersonaController {
 	
 	@Autowired
 	private PaisService paisService;
-	
+
+	@Autowired
+	private AficionService aficionService;
+
 	@GetMapping("r")
 	public String r(ModelMap m) {
 		m.put("view", "persona/r");
@@ -32,6 +38,7 @@ public class PersonaController {
 	@GetMapping("c")
 	public String c(ModelMap m) {
 		m.put("paises", paisService.findAll());
+		m.put("aficiones", aficionService.findAll());
 		m.put("view", "persona/c");
 		return "_t/frame";
 	}
@@ -41,17 +48,20 @@ public class PersonaController {
 			@RequestParam("loginname") String loginname, 
 			@RequestParam("nombre") String nombre,
 			@RequestParam("apellido") String apellido,
-			@RequestParam(value="idPaisNace",required = false) Long idPaisnace
+			@RequestParam(value="idPaisNace",required = false) Long idPaisnace,
+			@RequestParam(value="idPaisVive",required = false) Long idPaisVive,
+			@RequestParam(value="idsAficionGusta[]",required = false )  Long[] idsAficionGusta,
+			@RequestParam(value="idsAficionOdia[]",required = false) Long[] idsAficionOdia
 			) throws DangerException 
 	{
 		try {
-			personaService.save(loginname, nombre, apellido, idPaisnace);
+			personaService.save(loginname, nombre, apellido, idPaisnace, idPaisVive, idsAficionGusta, idsAficionOdia);
 		} catch (Exception e) {
 			if (e.getMessage().contains("UK_loginname")) {
 				PRG.error("El loginname "+loginname+" ya existe","/persona/c");
 			}
 			else {
-				PRG.error("Error desconocido al guardar la persona ","/persona/c");
+				PRG.error("Error desconocido al guardar la persona "+e.getMessage(),"/persona/c");
 			}
 		}
 		return "redirect:/persona/r";

@@ -1,9 +1,13 @@
 package org.alberto.papRec2022.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -25,9 +29,20 @@ public class Persona {
 	
 	@ManyToOne(optional = true)
 	private Pais nace;
+
+	@ManyToOne(optional = true)
+	private Pais vive;
+	
+	@ManyToMany(mappedBy = "gustosos")
+	private Collection<Aficion> gustos;
+	
+	@ManyToMany(mappedBy = "odiosos")
+	private Collection<Aficion> odios;
 	
 	//=============================
 	public Persona() {
+		this.gustos= new ArrayList<Aficion>();
+		this.odios= new ArrayList<Aficion>();
 	}
 
 	public Persona(String loginname, String nombre, String apellido) {
@@ -35,12 +50,40 @@ public class Persona {
 		this.loginname = loginname;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.gustos= new ArrayList<Aficion>();
+		this.odios= new ArrayList<Aficion>();
+
 	}
 
 	//=============================
 
+	
 	public Long getId() {
 		return id;
+	}
+
+	public Pais getVive() {
+		return vive;
+	}
+
+	public void setVive(Pais vive) {
+		this.vive = vive;
+	}
+
+	public Collection<Aficion> getGustos() {
+		return gustos;
+	}
+
+	public void setGustos(Collection<Aficion> gustos) {
+		this.gustos = gustos;
+	}
+
+	public Collection<Aficion> getOdios() {
+		return odios;
+	}
+
+	public void setOdios(Collection<Aficion> odios) {
+		this.odios = odios;
 	}
 
 	public void setId(Long id) {

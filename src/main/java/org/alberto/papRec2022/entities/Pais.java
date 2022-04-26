@@ -26,22 +26,37 @@ public class Pais {
 	
 	@OneToMany(mappedBy = "nace")
 	private Collection<Persona> nacidos;
-	
+
+	@OneToMany(mappedBy = "vive")
+	private Collection<Persona> residentes;
+
 	//=============================
 	public Pais() {
 		this.nacidos = new ArrayList<Persona>();
+		this.residentes= new ArrayList<Persona>();
 	}
 
 	public Pais(String nombre) {
 		super();
 		this.nombre = nombre;
 		this.nacidos = new ArrayList<Persona>();
+		this.residentes= new ArrayList<Persona>();
 	}
 
 	//=============================
 
+	
+	
 	public Long getId() {
 		return id;
+	}
+
+	public Collection<Persona> getResidentes() {
+		return residentes;
+	}
+
+	public void setResidentes(Collection<Persona> residentes) {
+		this.residentes = residentes;
 	}
 
 	public void setId(Long id) {
