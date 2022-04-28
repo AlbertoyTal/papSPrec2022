@@ -77,6 +77,7 @@ public class PersonaController {
 		}
 		m.put("persona", personaService.getById(idPersona));
 		m.put("paises", paisService.findAll());
+		m.put("aficiones", aficionService.findAll());
 		m.put("view", "persona/u");
 		return "_t/frame";
 	}

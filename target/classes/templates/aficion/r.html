@@ -8,11 +8,16 @@
 	<table class="table table-striped">
 		<tr>
 			<th>Nombre</th>
+			<th>#gustosos</th>
+			<th>#odiosos</th>
 			<th>Acciones</th>
 		</tr>
 		
 		<tr th:each="aficion : ${aficiones}">
 			<td> <th:block th:text="${aficion.nombre}"/></td>
+			<td> <th:block th:text="${aficion.gustosos.size()}"/> </td>
+			<td> <th:block th:text="${aficion.odiosos.size()}"/> </td>
+
 			<td class="row"> 
 				<form action="/aficion/u">
 					<input type="hidden" name="idAficion" th:value="${aficion.id}"/>

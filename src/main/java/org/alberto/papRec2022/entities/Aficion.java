@@ -12,25 +12,22 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = { 
-		@UniqueConstraint(name="UK_AficionNombre", columnNames = { "nombre" })
-	}
-)
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UK_AficionNombre", columnNames = { "nombre" }) })
 public class Aficion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nombre;
-	
+
 	@ManyToMany
 	private Collection<Persona> gustosos;
-	
+
 	@ManyToMany
 	private Collection<Persona> odiosos;
-	
-	//=============================
+
+	// =============================
 	public Aficion() {
 		this.gustosos = new ArrayList<Persona>();
 		this.odiosos = new ArrayList<Persona>();
@@ -43,9 +40,7 @@ public class Aficion {
 		this.odiosos = new ArrayList<Persona>();
 	}
 
-	//=============================
-	
-	
+	// =============================
 
 	public Long getId() {
 		return id;
@@ -79,6 +74,10 @@ public class Aficion {
 		this.nombre = nombre;
 	}
 
-	
-	//=============================
+	// =============================
+
+	@Override
+	public boolean equals(Object otraAficion) {
+		return ((Aficion) otraAficion).getId().equals(this.id);
+	}
 }

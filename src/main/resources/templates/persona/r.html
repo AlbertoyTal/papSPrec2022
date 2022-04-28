@@ -24,10 +24,10 @@
 			<td> <th:block th:text="${persona.nace?.nombre}"/> </td>
 			<td> <th:block th:text="${persona.vive?.nombre}"/> </td>
 			<td>
-				<th:block th:each=" gusto : ${persona.gustos}" th:text="|${gusto.nombre} /|" />
+				<th:block th:each=" gusto : ${persona.gustos}" th:text="|${gusto.nombre} |" />
 			</td>
 			<td>
-				<th:block th:each=" odio : ${persona.odios}" th:text="|${odio.nombre} /|" />
+				<th:block th:each=" odio : ${persona.odios}" th:text="|${odio.nombre} |" />
 			</td>
 			<td class="row"> 
 				<form action="/persona/u">

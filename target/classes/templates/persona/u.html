@@ -16,12 +16,57 @@
 		<input id="idApellido " type="text" th:value="${persona.apellido}" name="apellido"/>
 		<br/>
 		
+		<fieldset>
+		<legend>País de nacimiento</legend>
 		<select name="idPaisNace">
 			<option value="-1">-----</option>
 			<option th:each="pais:${paises}" th:value="${pais.id}" th:text="${pais.nombre}"
 			th:selected="${persona.nace?.id==pais.id}" 
 			/>
 		</select>
+		</fieldset>
+
+		<fieldset>
+		<legend>
+		País de residencia
+		</legend>
+		<select name="idPaisVive">
+			<option value="-1">-----</option>
+			<option th:each="pais:${paises}" th:value="${pais.id}" th:text="${pais.nombre}"
+			th:selected="${persona.vive?.id==pais.id}" 
+			/>
+		</select>
+		</fieldset>
+		
+		<div class="row">
+    	<fieldset>
+        	<legend>
+        	Aficiones (gustos)
+        	</legend>
+			<th:block th:each="aficion : ${aficiones}">
+				<input 
+				th:checked="${persona.gustos.contains(aficion)}"
+				th:id="|id-gusta-${aficion.id}|" type="checkbox" name="idsAficionGusta[]" th:value="${aficion.id}"/>
+				<label th:for="|id-gusta-${aficion.id}|" th:text="${aficion.nombre}"/>
+			</th:block>
+    	</fieldset>
+    	</div>
+
+
+		<div class="row">
+    	<fieldset>
+        	<legend>
+        	Aficiones (odios)
+        	</legend>
+			<th:block th:each="aficion : ${aficiones}">
+				<input 
+				th:checked="${persona.odios.contains(aficion)}"
+				th:id="|id-odia-${aficion.id}|" type="checkbox" name="idsAficionOdia[]" th:value="${aficion.id}"/>
+				<label th:for="|id-odia-${aficion.id}|" th:text="${aficion.nombre}"/>
+			</th:block>
+    	</fieldset>
+    	</div>
+
 		
 		<br/>
 		<input type="submit"/>
