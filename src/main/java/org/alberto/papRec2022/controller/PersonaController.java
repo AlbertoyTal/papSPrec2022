@@ -1,7 +1,6 @@
 package org.alberto.papRec2022.controller;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import org.alberto.papRec2022.exception.DangerException;
 import org.alberto.papRec2022.exception.PRG;
 import org.alberto.papRec2022.service.AficionService;
@@ -88,19 +87,24 @@ public class PersonaController {
 			@RequestParam("loginname") String loginname, 
 			@RequestParam("nombre") String nombre,
 			@RequestParam("apellido") String apellido,
-			@RequestParam(value="idPaisNace",required = false) Long idPaisNace) 
+			@RequestParam(value="idPaisNace",required = false) Long idPaisNace, 
+			@RequestParam(value="idPaisVive",required = false) Long idPaisVive,
+			@RequestParam(value="idsAficionGusta[]",required = false) ArrayList<Long> idsAficionGusta, 
+			@RequestParam(value="idsAficionOdia[]",required = false) ArrayList<Long> idsAficionOdia
+	)
+
 		throws DangerException
 
 	{
 		try {
-			personaService.update(idPersona,loginname, nombre, apellido, idPaisNace);
+			personaService.update(idPersona,loginname, nombre, apellido, idPaisNace, idPaisVive, idsAficionGusta, idsAficionOdia);
 			
 		} catch (Exception e) {
 			if (e.getMessage().contains("UK_loginname")) {
 				PRG.error("El loginname "+loginname+" ya existe","/persona/u?idPersona="+idPersona);
 			}
 			else {
-				PRG.error("Error desconocido al guardar la persona ","/persona/u?idPersona="+idPersona);
+				PRG.error("Error desconocido al guardar la persona  // "+e.getMessage(),"/persona/u?idPersona="+idPersona);
 			}
 		}
 		return "redirect:/persona/r";

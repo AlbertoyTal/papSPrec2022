@@ -1,5 +1,7 @@
 package org.alberto.papRec2022.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.alberto.papRec2022.entities.Aficion;
@@ -33,23 +35,13 @@ public class PersonaService {
 	public Persona getById(Long idPersona) {
 		return personaRepository.getById(idPersona);
 	}
-
-	public void update(Long idPersona, String loginname, String nombre, String apellido) throws Exception {
-		Persona persona = personaRepository.getById(idPersona);
-		if (!loginname.equals(persona.getLoginname())) {
-			if (personaRepository.findByLoginname(loginname) == null) {
-				persona.setLoginname(loginname);
-			} else {
-				throw new Exception("UK_loginname");
-			}
-		}
-		persona.setNombre(nombre);
-		persona.setApellido(apellido);
-		personaRepository.saveAndFlush(persona);
-	}
-
 	
-	public void update(Long idPersona, String loginname, String nombre, String apellido, Long idPaisNace) throws Exception {
+	public void update(Long idPersona, String loginname, String nombre, String apellido, 
+			Long idPaisNace, Long idPaisVive,
+			List<Long> idsAficionGusta,
+			List<Long> idsAficionOdia
+			) throws Exception {
+		
 		Persona persona = personaRepository.getById(idPersona);
 		if (!loginname.equals(persona.getLoginname())) {
 			if (personaRepository.findByLoginname(loginname) == null) {
@@ -60,11 +52,52 @@ public class PersonaService {
 		}
 		persona.setNombre(nombre);
 		persona.setApellido(apellido);
+	
 		Pais paisNace = null;
 		if (idPaisNace != null && idPaisNace>0) {
 			paisNace = paisRepository.getById(idPaisNace);
 		}
 		persona.setNace(paisNace);
+
+		Pais paisVive = null;
+		if (idPaisVive != null && idPaisVive > 0) {
+			paisVive = paisRepository.getById(idPaisVive);
+		}
+		persona.setVive(paisVive);
+
+		
+		idsAficionGusta = idsAficionGusta==null? new ArrayList<Long>() : idsAficionGusta;
+		idsAficionOdia = idsAficionOdia ==null? new ArrayList<Long>() : idsAficionOdia;
+		
+		for (Aficion gusto : persona.getGustos()) {
+			gusto.getGustosos().remove(persona);
+			aficionRepository.saveAndFlush(gusto);
+		}
+		persona.getGustos().clear();
+		personaRepository.saveAndFlush(persona);
+		
+		ArrayList<Aficion> gustosNuevos = new ArrayList<Aficion>();
+		for (Long idAficionGusta : idsAficionGusta) {
+			Aficion gusto = aficionRepository.getById(idAficionGusta);
+			gusto.getGustosos().add(persona);
+			gustosNuevos.add(gusto);
+		}
+		persona.setGustos(gustosNuevos);
+
+		for (Aficion odio : persona.getOdios()) {
+			odio.getOdiosos().remove(persona);
+			aficionRepository.saveAndFlush(odio);
+		}
+		persona.getOdios().clear();
+		personaRepository.saveAndFlush(persona);
+		ArrayList<Aficion> odiosNuevos = new ArrayList<Aficion>();
+		for (Long idAficionOdia: idsAficionOdia) {
+			Aficion odio = aficionRepository.getById(idAficionOdia);
+			odio.getOdiosos().add(persona);
+			odiosNuevos.add(odio);
+		}
+		persona.setOdios(odiosNuevos);
+		
 		personaRepository.saveAndFlush(persona);
 	}
 
@@ -73,7 +106,39 @@ public class PersonaService {
 		if (personaRepository.findById(idPersona) == null) {
 			throw new Exception("El id de la persona " + idPersona + " no existe");
 		}
-		personaRepository.delete(personaRepository.getById(idPersona));
+		
+		Persona persona = personaRepository.getById(idPersona); 
+
+		Pais paisNacimiento = persona.getNace();
+		paisNacimiento.getNacidos().remove(persona);
+		paisRepository.saveAndFlush(paisNacimiento);
+		persona.setNace(null);
+		personaRepository.saveAndFlush(persona);
+		
+		Pais paisResidencia = persona.getVive();
+		paisResidencia.getResidentes().remove(persona);
+		paisRepository.saveAndFlush(paisResidencia);
+		persona.setVive(null);
+		personaRepository.saveAndFlush(persona);
+		
+		Collection<Aficion> gustos = persona.getGustos();
+		for (Aficion gusto : gustos) {
+			gusto.getGustosos().remove(persona);
+			aficionRepository.saveAndFlush(gusto);
+		}
+		persona.getGustos().clear();
+		personaRepository.saveAndFlush(persona);
+
+		Collection<Aficion> odios = persona.getOdios();
+		for (Aficion odio : odios) {
+			odio.getOdiosos().remove(persona);
+			aficionRepository.saveAndFlush(odio);
+		}
+		persona.getOdios().clear();
+		personaRepository.saveAndFlush(persona);
+		
+		personaRepository.delete(persona);
+		
 	}
 
 	public void save(String loginname, String nombre, String apellido) {

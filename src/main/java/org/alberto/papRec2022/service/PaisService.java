@@ -48,13 +48,23 @@ public class PaisService {
 		if (paisRepository.findById(idPais) == null) {
 			throw new Exception("El id del país " + idPais + " no existe");
 		}
+		
 		Pais pais = paisRepository.getById(idPais);
+
 		for (Persona persona : pais.getNacidos()) {
 			persona.setNace(null);
 			personaRepository.saveAndFlush(persona);
 		}
 		pais.getNacidos().clear();
 		paisRepository.saveAndFlush(pais);
+
+		for (Persona persona : pais.getResidentes()) {
+			persona.setVive(null);
+			personaRepository.saveAndFlush(persona);
+		}
+		pais.getResidentes().clear();
+		paisRepository.saveAndFlush(pais);
+
 		paisRepository.delete(pais);
 	}
 }
