@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "UK_AficionNombre", columnNames = { "nombre" }) })
 public class Aficion {
@@ -22,9 +24,11 @@ public class Aficion {
 	private String nombre;
 
 	@ManyToMany
+	@JsonIgnore
 	private Collection<Persona> gustosos;
 
 	@ManyToMany
+	@JsonIgnore
 	private Collection<Persona> odiosos;
 
 	// =============================

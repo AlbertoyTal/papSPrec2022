@@ -18,8 +18,8 @@ public class AficionService {
 		return aficionRepository.findAll();
 	}
 
-	public void save(Aficion aficion) {
-		aficionRepository.save(aficion);
+	public Aficion save(Aficion aficion) {
+		return aficionRepository.save(aficion);
 	}
 
 	public Aficion getById(Long idAficion) {
